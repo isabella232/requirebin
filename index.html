@@ -1,102 +1,139 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>RequireBin</title>
+<head>
     <meta charset="utf-8">
-    <link rel='shortcut icon' href="favicon.ico" type="image/x-icon" />
+    <title>BrowserifyBin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <link rel='shortcut icon' href="img/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/codemirror.css"/>
-    <link rel="stylesheet" type="text/css" href="css/theme.css"/>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="flatui/css/flat-ui.css">
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-  </head>
-  <body>
-    <a href="/"><img class="logo" src="img/logo-black.png"></a>
-    
-    <p class="tagline">Shareable JavaScript programs powered by <a href="http://npmjs.org" target="_blank"><span class="npm"></span></a> and <a href="http://browserify.org" target="_blank"><span class="browserify"></span></a></p>
 
-    <select class="actionsMenu" value="Actions" tabindex="1">
-      <option value="noop" selected="selected">Actions</option>
-      <option value="save">Save Gist</option>
-      <option value="save-private">Save Private Gist</option>
-      <option value="howto">See instructions</option>
-      <option value="share">Share/Embed</option>
-    </select>
-    
-    <div class="actionsButtons">
-      <a title="COMMAND+ENTER or CTRL+ENTER" data-action="play" class="play-button hidden btn btn-block btn-lg btn-primary"><i class="fui-eye-16"></i>Rebuild</a>
-    </div>
-    
-    <span class="cacheState hidden">Code has been edited since last build</span>
-    
-    <div id="play" class="right">
-      <div id="share" class="hidden">
-        <p id="shareDisabled">You have to save your project before you can embed it.</p>
-        <div id="shareInstructions" class="hidden">
-          <p>HTML Embed code:</p>
-          <textarea id="shareTextarea"></textarea>
-          <p>HTML Embed example:</p>
-          <p><a href="/embed?gist=6264704" target="_blank">requirebin.com/embed?gist=6264704</a></p>
-          <p>Share Badge Markdown code:</p>
-          <textarea id="shareBadgeTextarea"></textarea>
-          <p>Markdown Share Badge image code:</p>
-          <textarea id="markdownShareBadgeTextarea"></textarea>
-          <p>Share Badge example:</p>
-          <a class="requirebin-link" target="_blank"><div class="requirebin-badge"></div></a>
-        </div>
-      </div>
-      <div id="howto" class="hidden">
-        <p>Node.js style modular code gets transformed into code that can run client-side using <a href="http://browserify.org/" target="_blank">browserify</a> via <a target="_blank" href="http://wzrd.in.nyud.net/" target="_blank">browserify-cdn</a>.</p>
-                
-        <p>Want to see an example? <a target="_blank" href="/?gist=juliangruber/6264704">requirebin.com/?gist=juliangruber/6264704</a></p>
-        <p>They are also embeddable <a target="_blank" href="/embed?gist=juliangruber/6264704">requirebin.com/embed?gist=juliangruber/6264704</a></p>
-        <p>Here are <a href="https://gist.github.com/maxogden/9425694">a bunch more examples to play with</a>.</p>
-        <p>Need HTML or CSS? Check out <a target="_blank" href="http://requirebin.com/?gist=maxogden/9842648">insert-css and domify</a>.</p>
-        <p>The <span class="view-icon"></span> buttons run the code from the current bin.</p>
-        <div class="col-xs-3"><a class="run-btn btn btn-block btn-lg btn-primary"><i class="fui-eye-16"></i> Rebuild</a></div>
-        
-        <div class="attribution">
-          <p>View the source or report bugs <a href="https://github.com/maxogden/requirebin" target="_blank">on Github</a>.</p>
-          <p><strong>Need Help?</strong> Send a question via tweet to <a href="http://twitter.com/maxogden" target="_blank">@maxogden</a></p>
-          <p><a href="http://thenounproject.com/noun/recycle-bin/#icon-No12230" target="_blank">Recycle Bin</a> icon designed by <a href="http://thenounproject.com/jjaysonn" target="_blank">jayson lim</a></p>
-          <p><a href="#" class="hide-howto">hide these instructions</a></p>
-        </div>
-      </div>
-      <div class="packagejson hidden">
-        <h6>Modules In Use</h6>
-        <div id="tagsinput" class="tagsinput" />
-          <div class="tagsinput-add">No Modules Required Yet</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="spinner hidden">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
-    
-    <div id="edit" class="left">
+</head>
 
-    </div>
-<script id="template" type="text/template">// require() some stuff from npm (like you were using browserify)
-// and then hit Rebuild to run it on the right
+<body>
+<div class="container">
+    <section class="header">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <h3 class="text-center glow">
+                    BrowserifyBin
+                    <small class="hidden-xs"> run npm modules in the browser.</small>
+                </h3>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="main">
+
+        <div class="row clearfix">
+
+            <div class="col-md-4 column f-left">
+                <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 .col-md-offset-4 column f-left center white">
+                <span class="cacheState hidden">Code has been edited since last run</span>
+            </div>
+
+            <div class="col-md-4 column f-right">
+                <div class="actionsButtons">
+                    <button type="button" class="btn btn-default play-button hidden" data-toggle="tooltip"
+                            data-placement="top" title="COMMAND+ENTER or CTRL+ENTER" data-action="play"><i
+                            class="glyphicon glyphicon-play"></i> Run
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading pointer" title="click to show/hide" data-toggle="tooltip"
+                         data-placement="top">
+                        <div data-toggle="collapse" data-target="#edit">
+                            <h3 class="panel-title">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i>
+                                JavaScript including require('npm-modules')
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div id="edit" class="panel-body collapse in">
+                        <!-- JavaScript Code -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="panel panel-default">
+                    <div class="panel-heading pointer" title="click to show/hide" data-toggle="tooltip"
+                         data-placement="top">
+                        <div data-toggle="collapse" data-target="#play">
+                            <h3 class="panel-title">
+                                <i class="glyphicon glyphicon-menu-hamburger"></i>
+                                Output browserified
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <!-- browserified output -->
+                    </div>
+                    <div id="play" class="embed-responsive embed-responsive-4by3">
+                        <!--
+                        <div class="packagejson hidden">
+                            <h6>Modules In Use</h6>
+
+                            <div id="tagsinput" class="tagsinput"/>
+                            <div class="tagsinput-add">No Modules Required Yet</div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="footer">
+        <div class="row clearfix">
+            <div class="col-md-12 column white">
+                <p>
+                    This is a requirebin fork by <strong><a href="//www.intesso.com" class="white glow">intesso</a></strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<script id="template" type="text/template">
+    // require() some stuff from npm (like you were using browserify)
+    // and then hit Rebuild to run it on the right
 </script>
-  <script type="text/javascript" src="flatui-deps.js"></script>
-  <script type="text/javascript" src="bundle.js"></script>
-  <script type="text/javascript" src="uglifyjs2-browser.js"></script>
-  
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-42274004-1', 'requirebin.com');
-    ga('send', 'pageview');
+<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/bundle.js"></script>
 
-  </script>
-  </body>
+</body>
 </html>

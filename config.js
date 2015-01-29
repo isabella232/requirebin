@@ -1,5 +1,8 @@
 module.exports = {
+  // used for gist
   GITHUB_CLIENT: '77ca0223691ae7245419',
-  GATEKEEPER: 'http://localhost:9999',
-  BROWSERIFYCDN: 'http://localhost:8000'
+  // used for oauth authentification
+  GATEKEEPER: 'http://gatekeeper.maxogden.com',
+  // used for fetching browserify bundles
+  BROWSERIFYCDN: 'http://wzrd.in'
 }
